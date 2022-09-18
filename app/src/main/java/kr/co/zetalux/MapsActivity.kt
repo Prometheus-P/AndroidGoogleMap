@@ -41,7 +41,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-
     }
 
     // 맵이 준비 되었을 때
