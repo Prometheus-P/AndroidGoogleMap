@@ -1,5 +1,7 @@
+// 패키지: 해당 클래스의 위치
 package kr.co.zetalux
 
+// 다른 프로그램으로부터 데이터를 가져오는 것
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -9,21 +11,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.zetalux.R
-import com.example.zetalux.databinding.DialogMarkerPopBinding
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
-import java.util.*
 
-
+// 클래스 : 부모 클래스(), 인터페이스
+// 클래스 -> 객체를 찍어 내기 위한 설계도 (객체를 여러개 일 수 있다)
+// 인터페이스 -> 밑그림만 있는 설계도. 채색은 상속 받은 객체에서 해줘야 한다
+// 부모 클래스 존재의 이유? -> 설계도 양식. 양식만 맞추면 필요에 알맞게 설계도 생성 가능
+// 부모 클래스와 인터페이스 차이 -> 약간 채색되어 있는 밑그림 + 가져다 쓸 수 있음 vs 그냥 생 밑그림 + 강제적으로 구현
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val REQUEST_LOCATION_PERMISSION = 1
@@ -34,6 +36,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+
+        // fragment, activity => View 를 담는 container
+        // fragment < activity
+        // fragment 는 activity 에 종속 되어 있으나, 독립적으로 활용 가능
+        // 구글 지도를 담을 Container
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -43,41 +50,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onStart()
     }
 
-    // 맵이 준비 되었을 때
-    // https://developers.google.com/android/reference/com/google/android/gms/maps/OnMapReadyCallback?hl=ko
-    override fun onMapReady(googleMap: GoogleMap) {
-        myMap = googleMap
-        // 맵 조작 ui
-        val factory = MapSetting(this, myMap)
-        with(factory) {
-            setGoogleMapUi()
-            setMapVisibility(minZoom = 10.0f, maxZoom = 22.0f)
-            setMapStyle()
-        }
-        // 맵 길게 클릭 시 이벤트 설정
-        val event = MapEvent(this, myMap)
-        event.setMapLongClick()
-
-        event.setPoiClick()
-
-        // 권한 확인
-        if (isPermissionGranted()) {
-            // 내 위치 정보 접근 권한 있으면 실행
-            enableMyLocation(myMap)
-        } else {
-            // 내 위치 정보 접근 권한 없으면 실행
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                REQUEST_LOCATION_PERMISSION
-            )
-        }
-
-    }
-
     // 우측 상단 메뉴 버튼
     // https://developer.android.com/guide/topics/ui/menus?hl=ko
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,6 +57,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return true
     }
 
+    // 메뉴 선택 이벤트
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.normal_map -> {
             myMap.mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -105,6 +78,54 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         else -> super.onOptionsItemSelected(item)
     }
 
+
+    // 맵이 준비 되었을 때
+    // https://developers.google.com/android/reference/com/google/android/gms/maps/OnMapReadyCallback?hl=ko
+    override fun onMapReady(googleMap: GoogleMap) {
+        myMap = googleMap
+        // 맵 조작 ui
+        mapUI()
+        // 맵 길게 클릭 시 이벤트 설정
+        mapEvent()
+        // 위치 권한 확인
+        appLocationPermission()
+    }
+
+    private fun mapUI(){
+        // 맵 조작 ui
+        val factory = MapSetting(this, myMap)
+        with(factory) {
+            setGoogleMapUi()
+            setMapVisibility(minZoom = 10.0f, maxZoom = 22.0f)
+            setMapStyle()
+        }
+    }
+
+    private fun mapEvent(){
+        // 맵 길게 클릭 시 이벤트 설정
+        val event = MapEvent(this, myMap)
+        event.setMapLongClick()
+        event.setPolyLineButton()
+        event.setPoiClick()
+    }
+
+    private fun appLocationPermission(){
+        // 권한 확인
+        if (isPermissionGranted()) {
+            // 내 위치 정보 접근 권한 있으면 실행
+            enableMyLocation(myMap)
+        } else {
+            // 내 위치 정보 접근 권한 없으면 실행
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                REQUEST_LOCATION_PERMISSION
+            )
+        }
+    }
 
     /*
     private fun isPermissionGranted(): Boolean =
@@ -142,7 +163,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return isFineGranted && isCoarseGranted
     }
 
-
+    // 내 위치 찾기 허용
     @SuppressLint("MissingPermission")
     private fun enableMyLocation(map: GoogleMap?) {
         // 파라미터가 널 값일 경우
