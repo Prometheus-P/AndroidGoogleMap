@@ -7,7 +7,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "kr.co.zetalux"
+        applicationId "kr.co.zetalux.androidgooglemap"
         minSdkVersion 24
         targetSdkVersion 33
         versionCode 1

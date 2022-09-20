@@ -19,7 +19,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="kr.co.zetalux.MapsActivity"
+            android:name="kr.co.zetalux.androidgooglemap.MapsActivity"
             android:label="@string/title_activity_maps"
             android:exported="true">
             <intent-filter>

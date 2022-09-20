@@ -1,7 +1,5 @@
-package kr.co.zetalux
+package kr.co.zetalux.androidgooglemap
 
-import android.content.Context
-import android.widget.Toast
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 
@@ -52,6 +50,11 @@ class DrawPoly(private val map: GoogleMap) :
 
     126.734086
     127.269311
+
+    서울역 : 37.5552782 , 126.9706760
+    신구대학교 : 37.4487435 , 127.1680606
+    노원역 : 37.6562678 , 127.0630304
+
      */
 
 

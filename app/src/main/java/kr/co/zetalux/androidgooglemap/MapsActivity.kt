@@ -1,5 +1,5 @@
 // 패키지: 해당 클래스의 위치
-package kr.co.zetalux
+package kr.co.zetalux.androidgooglemap
 
 // 다른 프로그램으로부터 데이터를 가져오는 것
 import android.Manifest
@@ -169,6 +169,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // 파라미터가 널 값일 경우
         val myMap = map ?: this.myMap
         val mLocMan = getSystemService(LOCATION_SERVICE) as LocationManager
+
         if (mLocMan.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             myMap.isMyLocationEnabled = true
             // https://developers.google.com/android/reference/com/google/android/gms/location/FusedLocationProviderClient

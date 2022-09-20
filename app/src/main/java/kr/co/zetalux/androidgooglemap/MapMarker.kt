@@ -1,4 +1,4 @@
-package kr.co.zetalux
+package kr.co.zetalux.androidgooglemap
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -8,14 +8,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import com.example.zetalux.R
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import java.util.*
 
 class MapMarker(private val activity: Activity, private val map: GoogleMap) {
 

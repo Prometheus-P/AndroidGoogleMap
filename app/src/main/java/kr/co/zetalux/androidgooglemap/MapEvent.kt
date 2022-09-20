@@ -1,4 +1,4 @@
-package kr.co.zetalux
+package kr.co.zetalux.androidgooglemap
 
 import android.app.Activity
 import android.widget.Button
@@ -87,7 +87,7 @@ class MapEvent(private val activity: Activity, private val map: GoogleMap) {
             snackbar.show();
         }
     }
-
+    // 같이 분석
     fun setPolyLineButton() {
         val drawPoly = DrawPoly(map)
         map.setOnPolylineClickListener(drawPoly)
@@ -98,6 +98,7 @@ class MapEvent(private val activity: Activity, private val map: GoogleMap) {
             val lng1 = polyDialogBinding.txtLongitude1.text
             val lat2 = polyDialogBinding.txtLatitude2.text
             val lng2 = polyDialogBinding.txtLongitude2.text
+
             if (lat1.isBlank() || lng1.isBlank() || lat2.isBlank() || lng2.isBlank()) {
                 Toast.makeText(activity, "모두 채워주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
